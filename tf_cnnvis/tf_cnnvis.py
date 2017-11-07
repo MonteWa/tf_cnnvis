@@ -287,6 +287,7 @@ def _activation(graph, sess, op_tensor, feed_dict):
 		with sess.as_default() as sess:
 			act = sess.run(op_tensor, feed_dict = feed_dict)
 	return act
+
 def _deconvolution(graph, sess, op_tensor, X, feed_dict):
 	out = []
 	with graph.as_default() as g:
@@ -309,6 +310,7 @@ def _deconvolution(graph, sess, op_tensor, X, feed_dict):
 				if c > 0:
 					out.extend(sess.run(reconstruct[:c], feed_dict = feed_dict))
 	return out
+
 def _deepdream(graph, sess, op_tensor, X, feed_dict, layer, path_outdir, path_logdir):
 	tensor_shape = op_tensor.get_shape().as_list()
 
@@ -378,10 +380,14 @@ def activation_visualization(graph_or_path, value_feed_dict, input_tensor = None
 	is_success = _get_visualization(graph_or_path, value_feed_dict, input_tensor = input_tensor, layers = layers, method = "act",
 		path_logdir = path_logdir, path_outdir = path_outdir)
 	return is_success
+
+# deconvolution visualization
 def deconv_visualization(graph_or_path, value_feed_dict, input_tensor = None, layers = 'r', path_logdir = './Log', path_outdir = "./Output"):
 	is_success = _get_visualization(graph_or_path, value_feed_dict, input_tensor = input_tensor, layers = layers, method = "deconv",
 		path_logdir = path_logdir, path_outdir = path_outdir)
 	return is_success
+
+
 def deepdream_visualization(graph_or_path, value_feed_dict, layer, classes, input_tensor = None, path_logdir = './Log', path_outdir = "./Output"):
 	is_success = True
 	if isinstance(layer, list):

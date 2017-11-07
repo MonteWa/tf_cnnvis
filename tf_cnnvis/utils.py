@@ -128,6 +128,7 @@ def _write_activation(activations, layer, path_outdir, path_logdir):
 		finally:
 			file_writer.close() # close file writer
 	return is_success
+
 def _write_deconv(images, layer, path_outdir, path_logdir):
 	is_success = True
 
@@ -178,6 +179,7 @@ def _write_deconv(images, layer, path_outdir, path_logdir):
 		finally:
 			file_writer.close() # close file writer
 	return is_success
+
 def _write_deepdream(images, layer, path_outdir, path_logdir):
 	is_success = True
 
