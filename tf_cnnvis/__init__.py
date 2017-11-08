@@ -6,4 +6,4 @@ from .tf_cnnvis import get_deconv_results
 from .utils import convert_into_grid
 from .utils import image_normalization
 
-__all__ = ["activation_visualization", "deconv_visualization", "deepdream_visualization", "convert_into_grid", "image_normalization"]
+__all__ = ["activation_visualization", "deconv_visualization", "deepdream_visualization", "convert_into_grid", "image_normalization","get_deconv_results"]
