@@ -262,7 +262,7 @@ def _visualization_by_layer_name(graph, value_feed_dict, input_tensor, layer_nam
 				# deconvolution
 				global DECONV_RESULTS
 				results = _deconvolution(graph, sess, op_tensor, X, feed_dict)
-				DECONV_RESULTS = results
+				DECONV_RESULTS = 1024
 			elif method == "deepdream":
 				# deepdream
 				is_success = _deepdream(graph, sess, op_tensor, X, feed_dict, layer_name, path_outdir, path_logdir)
@@ -404,3 +404,6 @@ def deepdream_visualization(graph_or_path, value_feed_dict, layer, classes, inpu
 		is_success = _get_visualization(graph_or_path, value_feed_dict, input_tensor = input_tensor, layers = layer, method = "deepdream",
 			path_logdir = path_logdir, path_outdir = path_outdir)
 	return is_success
+
+def get_deconv_results():
+	return DECONV_RESULTS
