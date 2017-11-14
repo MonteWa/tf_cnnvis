@@ -112,6 +112,7 @@ def _get_visualization(graph_or_path, value_feed_dict, input_tensor, layers, pat
 	"""
 	is_success = True
 
+#to judge the graph_or_path is a graph or a path
 	if isinstance(graph_or_path, tf.Graph):
 		PATH = _save_model(graph_or_path)
 	elif isinstance(graph_or_path, string_types):
@@ -121,6 +122,7 @@ def _get_visualization(graph_or_path, value_feed_dict, input_tensor, layers, pat
 		is_success = False
 		return is_success
 
+#if the method is deconv, gradient will be overwrite
 	is_gradient_overwrite = method == "deconv"
 	if is_gradient_overwrite:
 		_register_custom_gradients() # register custom gradients
@@ -291,8 +293,8 @@ def _activation(graph, sess, op_tensor, feed_dict):
 	return act
 
 def _deconvolution(graph, sess, op_tensor, X, feed_dict):
-	out = []
-	with graph.as_default() as g:
+	out = [] #set a list
+	with graph.as_default() as g: #what is graph.as_default()
 		# get shape of tensor
 		tensor_shape = op_tensor.get_shape().as_list()
 
@@ -300,7 +302,7 @@ def _deconvolution(graph, sess, op_tensor, X, feed_dict):
 			# creating placeholders to pass featuremaps and
 			# creating gradient ops
 			featuremap = [tf.placeholder(tf.int32) for i in range(config["N"])]
-			reconstruct = [tf.gradients(tf.transpose(tf.transpose(op_tensor)[featuremap[i]]), X)[0] for i in range(config["N"])]
+			reconstruct = [tf.nn.relu(tf.gradients(tf.transpose(tf.transpose(op_tensor)[featuremap[i]]), X)[0]) for i in range(config["N"])]
 
 			# Execute the gradient operations in batches of 'n'
 			for i in range(0, tensor_shape[-1], config["N"]):
