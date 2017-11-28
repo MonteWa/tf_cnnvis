@@ -11,7 +11,7 @@ from six import iteritems
 
 import tensorflow as tf
 
-
+DECONV_RESULTS = []
 k = np.float32([1, 4, 6, 4, 1])
 k = np.outer(k, k)
 K5X5 = k[ : , : , None , None ] / k.sum() * np.eye(3, dtype = np.float32)
@@ -132,6 +132,7 @@ def _write_activation(activations, layer, path_outdir, path_logdir):
 def _write_deconv(images, layer, path_outdir, path_logdir):
 	is_success = True
 
+	DECONV_RESULTS.append(images)
 	images = _im_normlize(images)
 	grid_images = _images_to_grid(images)
 
@@ -272,6 +273,7 @@ def image_normalization(image, s = 0.1, ubound = 255.0):
 	img_min = np.min(image)
 	img_max = np.max(image)
 	return (((image - img_min) * ubound) / (img_max - img_min + config["EPS"])).astype('uint8')
+
 def _im_normlize(images, ubound = 255.0):
 	N = len(images)
 	H, W, C = images[0][0].shape
@@ -383,3 +385,6 @@ def lap_normalize(img, channels, scale_n):
 	tlevels = list(map(_normalize_std, tlevels))
 	out = _lap_merge(tlevels)
 	return out
+
+def get_deconv_results():
+	return DECONV_RESULTS

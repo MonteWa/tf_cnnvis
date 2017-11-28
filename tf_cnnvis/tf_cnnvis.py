@@ -24,6 +24,8 @@ units = None
 
 configProto = tf.ConfigProto(allow_soft_placement = True)
 
+
+
 # register custom gradients
 def _register_custom_gradients():
 	"""
@@ -261,10 +263,10 @@ def _visualization_by_layer_name(graph, value_feed_dict, input_tensor, layer_nam
 				# compute activations
 				results = _activation(graph, sess, op_tensor, feed_dict)
 			elif method == "deconv":
+
 				# deconvolution
-				global DECONV_RESULTS
 				results = _deconvolution(graph, sess, op_tensor, X, feed_dict)
-				DECONV_RESULTS = results
+
 			elif method == "deepdream":
 				# deepdream
 				is_success = _deepdream(graph, sess, op_tensor, X, feed_dict, layer_name, path_outdir, path_logdir)
@@ -293,6 +295,7 @@ def _activation(graph, sess, op_tensor, feed_dict):
 	return act
 
 def _deconvolution(graph, sess, op_tensor, X, feed_dict):
+
 	out = [] #set a list
 	with graph.as_default() as g: #what is graph.as_default()
 		# get shape of tensor
@@ -313,6 +316,7 @@ def _deconvolution(graph, sess, op_tensor, X, feed_dict):
 						c += 1
 				if c > 0:
 					out.extend(sess.run(reconstruct[:c], feed_dict = feed_dict))
+
 	return out
 
 def _deepdream(graph, sess, op_tensor, X, feed_dict, layer, path_outdir, path_logdir):
@@ -407,5 +411,3 @@ def deepdream_visualization(graph_or_path, value_feed_dict, layer, classes, inpu
 			path_logdir = path_logdir, path_outdir = path_outdir)
 	return is_success
 
-def get_deconv_results():
-	return DECONV_RESULTS
